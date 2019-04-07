@@ -64,7 +64,8 @@ print(getEntropyGainRatio(s1,s2))
 def getCorrEntropy(s1,s2):
     return getEntropyGain(s1,s2)/np.sqrt(getEntropy(s1)*getEntropy(s2))
 print(getCorrEntropy(s2,s1))
-
+#TODO
+#gini系数的计算
 def getPross(s):
     if not isinstance(s,pd.core.series.Series):
         s=pd.Series(s)
