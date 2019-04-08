@@ -3,10 +3,11 @@ import seaborn as sns
 import numpy as np
 import  scipy.stats as ss
 import matplotlib.pyplot as plt
+from sklearn.decomposition import PCA
 
 
 plt.rcParams['axes.unicode_minus']=False
-df=pd.read_csv('./hr.csv')
+df=pd.read_csv('../dataset/hr.csv')
 df=df.drop(axis=1,index=[14999,15000,15001])
 #TODO
 #交叉分析，离职率的按部门分布是否有显著差异
@@ -51,6 +52,18 @@ sns.barplot(list(range(len(df))),stf_l.sort_values())
 #相关性分析
 plt.figure('相关性分析')
 sns.heatmap(df.corr(),vmin=-1,vmax=1)
+
+#TODO
+#因子分析（成分分析）
+#解释模糊，需要查文档
+plt.figure('因子分析')
+myPca=PCA(n_components=7)
+low_mat=myPca.fit_transform(df.drop(labels=['salary','department','left'],axis=1))
+print(myPca.explained_variance_ratio_)
+low_mat_d=pd.DataFrame(low_mat)
+sns.heatmap(low_mat_d.corr(),vmin=-1,vmax=1)
+
 plt.show()
+
 
 
