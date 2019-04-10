@@ -19,7 +19,8 @@ for gene in datamk.index:
     datamk.loc[gene,'ko1':'ko5']=np.random.poisson(lam=rd.randrange(10,1000),size=5)
 #center and scale data,after centering the average value for each gene will be 0
 #after sacling,the standard deviation for the values for each gene will be 1
-scaled_data=preprocessing.scale(datamk.T) #or StandardScaler().fit_transform(datamk,T)
+scaled_data=preprocessing.scale(datamk.T) #scale function expect samples(compare to varibles) to be rows instead of columns
+# or StandardScaler().fit_transform(datamk,T)
 pca=PCA()#create PCA object
 pca.fit(scaled_data)#do the PCA math
 pca_data=pca.fit_transform(scaled_data)#generate coordinates for PCA graph
@@ -53,11 +54,12 @@ plt.show()
 
 
 #PCA
-data = np.array([np.array([2.5,0.5,2.2,1.9,3.1,2.3,2,1,1.5,1.1]),
-                np.array([2.4,0.7,2.9,2.2,3,2.7,1.6,1.1,1.6,0.9])]).T
+data = np.array([np.array([2.4,0.7,2.9,2.2,3,2.7,1.6,1.1,1.6,0.9]),np.array([2.5,0.5,2.2,1.9,3.1,2.3,2,1,1.5,1.1])
+                ]).T
 data1 = np.array([[2.5,0.5,2.2,1.9,3.1,2.3,2,1,1.5,1.1],[2.4,0.7,2.9,2.2,3,2.7,1.6,1.1,1.6,0.9]]).T
 #skearn pca method 奇异值分解
-lower_dim =PCA(n_components=1)
+data_scaled=preprocessing.scale(data)
+lower_dim =PCA(n_components=2)
 lower_dim.fit(data)
 print('information ratio:\n',lower_dim.explained_variance_ratio_)
 print('transformed data:\n',lower_dim.transform(data))
