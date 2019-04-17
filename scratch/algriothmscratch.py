@@ -6,6 +6,25 @@ from sklearn import preprocessing
 import matplotlib.pyplot as plt
 
 #TODO
+#概率与数理统计基本概念
+#概率中的相关指的是线性相关
+X = np.array([[0,0,0],[1,0,1],[1,0,0],[1,1,0]]).T
+X_mean=np.mean(X,1)
+E=np.zeros([len(X),len(X)])
+for i in range(len(X)):
+    for j in range(len(X)):
+        E[i,j]=E[j,i]=(X[i]-X_mean[i]).dot(X[j]-X_mean[j])/len(X[i])
+
+print(E,'\n')
+print('np.cov(x,bias=1):\n{}\n\n'.format(np.cov(X,bias=1)))
+print('np.cov(x,bias=0):\n{}\n\n'.format(np.cov(X)))
+
+
+#TODO
+#协方差
+
+
+#TODO
 #降维
 #introduce
 #create data
