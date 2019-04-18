@@ -77,6 +77,33 @@ def get_Char(a):
 def now():
     print('what time is it?')
 now()
-
+#TODO
+#闭包（closure)
 print('闭包的概念：https://www.cnblogs.com/s-1314-521/p/9763376.html')
 print('总结：内存空间指针的应用')
+def lazy_sum(*args):
+    def sum():
+        s=0
+        for x in args:
+            s=s+x
+        return s
+    return sum
+
+def createCounter():
+    li = [0]
+    def counter():
+        li[0] += 1
+        return li[0]
+    return counter
+
+
+counterA = createCounter()
+print(counterA(), counterA(), counterA(), counterA(), counterA()) # 1 2 3 4 5
+counterB = createCounter()
+if [counterB(), counterB(), counterB(), counterB()] == [1, 2, 3, 4]:
+    print('测试通过!')
+else:
+    print('测试失败!')
+
+#利用闭包返回一个计数器函数，每次调用它返回递增整数
+#函数的调用和执行，f,f()
