@@ -45,7 +45,8 @@ def hr_preprocessing(sl=False,le=False,npr=False,amh=False,wa=False,
             df=pd.get_dummies(df,columns=[column_lst[i]])
     if low_d:
         return PCA(n_components=n_com).fit_transform(df.values)
-    return df,label
+    features=df
+    return features,label
 
 d={'low':0,'medium':1,'high':2}
 #d=dict([('low',0),('medium',1),('high',2)])
@@ -53,6 +54,11 @@ d={'low':0,'medium':1,'high':2}
 
 def map_salary(s):
     return d.get(s,0)
+def hr_modeling(features,label):
+    from sklearn.model_selection import train_test_split
+    X_tt,X_validation,Y_tt,Y_validation=train_test_split(features.values,label.values,test_size=0.2)
+    X_train,X_tt,Y_train,Y_tt=train_test_split(X_tt,Y_tt,test_size=0.25)
+    print(len(X_train),len(X_tt),len(X_validation))
 
 
 def main():
@@ -60,8 +66,9 @@ def main():
         pd.set_option('display.max_columns', 1024)
         pd.set_option('display.max_rows',2)
         break
-    df,label= hr_preprocessing()
-    print(df,label)
+    features,label= hr_preprocessing(dep=True)
+    hr_modeling(features,label)
+    print(features,label)
     #print(df['salary'].value_counts())
 if __name__=='__main__':
     main()
