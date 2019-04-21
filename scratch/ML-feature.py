@@ -6,9 +6,9 @@ from sklearn.preprocessing import Imputer
 
 df=pd.read_csv('D:\\depy2016\\adult.csv')
 X=df.drop('income',axis=1)
+
 y=df.income
 y=[0 if x == '<=50K' else 1 for x in y]
-print(y)
 X['age']=X['age'].where(X['age']!='#NAME?')
 X['fnlwgt']=X['fnlwgt'].where(X['fnlwgt']!='#NAME?')
 X['workclass']=X['workclass'].where(X['workclass']!='?','Never-worked')
@@ -20,7 +20,7 @@ X['sex']=X['sex'].where(X['sex']!='#NAME?','Male')
 X['native_country']=['United-States' if x =='United-States' else 'other' for x in X['native_country']]
 
 X=X.fillna(X.median())
-
+print(X['sex'].value_counts())
 '''
 tep=['age','fnlwgt','education_num']
 for i in tep:
@@ -28,8 +28,9 @@ for i in tep:
 对于datafram的空值填充就是按列进行的
 '''
 #以上为乱码，空值，离散属性处理
-while 0:
+while 1:
     X.to_excel('D:/数据分析进阶路/dataset/income.xls')
+    break
 
 #TODO
 #dummy feature for descrete value
@@ -42,7 +43,7 @@ for x in todummy_ls:
     dummies=pd.DataFrame(pd.get_dummies(X[x],prefix =x,dummy_na=False))
     X=X.drop(x,1)
     X=pd.concat([X,dummies],axis=1)
-print(X.head(5))
+#print(X.head(5))
 
 #TODO
 #feature engineering
@@ -62,7 +63,7 @@ def add_iteractions(df):
     df=df.drop(df.columns[noint_indicices],axis=1)
     return df
 X=add_iteractions(X)
-print(X.head(2))
+#print(X.head(2))
 
 #TODO
 #PCA降维
