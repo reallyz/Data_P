@@ -8,6 +8,7 @@ df=pd.read_csv('D:\\depy2016\\adult.csv')
 X=df.drop('income',axis=1)
 y=df.income
 y=[0 if x == '<=50K' else 1 for x in y]
+print(y)
 X['age']=X['age'].where(X['age']!='#NAME?')
 X['fnlwgt']=X['fnlwgt'].where(X['fnlwgt']!='#NAME?')
 X['workclass']=X['workclass'].where(X['workclass']!='?','Never-worked')
@@ -18,23 +19,25 @@ X['race']=X['race'].where(X['race']!='#NAME? ','White')
 X['sex']=X['sex'].where(X['sex']!='#NAME?','Male')
 X['native_country']=['United-States' if x =='United-States' else 'other' for x in X['native_country']]
 
+X=X.fillna(X.median())
 
+'''
 tep=['age','fnlwgt','education_num']
-
 for i in tep:
     X[i]=X[i].fillna(X[i].median)
-#以上为乱码，空值，离散属性降维处理
+对于datafram的空值填充就是按列进行的
 '''
-d=dict()
-for col in X.columns:
-    d[col]=X[col].dtypes
-'''
+#以上为乱码，空值，离散属性处理
+while 0:
+    X.to_excel('D:/数据分析进阶路/dataset/income.xls')
 
 #TODO
 #dummy feature for descrete value
 #每个feature+离散属性形成新的feature，衍生属性？
 todummy_ls=['workclass','education','marital_status','occupation','relationship',
             'race','sex','native_country']
+#X=pd.get_dummies(X,columns=[todummy_ls])
+
 for x in todummy_ls:
     dummies=pd.DataFrame(pd.get_dummies(X[x],prefix =x,dummy_na=False))
     X=X.drop(x,1)
