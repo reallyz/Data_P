@@ -1,5 +1,8 @@
-# Data analysis practice
+Data analysis practice
+===
+
 step by step
 
-what
-===
+1.数据获取
+---
+
