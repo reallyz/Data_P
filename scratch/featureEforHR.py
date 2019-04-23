@@ -59,6 +59,27 @@ def hr_modeling(features,label):
     X_tt,X_validation,Y_tt,Y_validation=train_test_split(features.values,label.values,test_size=0.2)
     X_train,X_tt,Y_train,Y_tt=train_test_split(X_tt,Y_tt,test_size=0.25)
     print(len(X_train),len(X_tt),len(X_validation))
+#TODO
+#KNN分类器
+    from sklearn.metrics import accuracy_score, recall_score, f1_score
+    from sklearn.neighbors import KNeighborsClassifier
+    from sklearn.naive_bayes import GaussianNB,BernoulliNB
+    models=[]
+    models.append(('KNN',KNeighborsClassifier()))
+    models.append(('GNB',GaussianNB()))
+    models.append(('BNB',BernoulliNB()))
+    dataset=[(X_train,Y_train),(X_validation,Y_validation),(X_tt,Y_tt)]
+    lis_n=['train','validation','test']
+    for cls_name,cls in models:
+        print(cls_name,'\n','-'*20)
+        cls.fit(X_train,Y_train)
+        for i in range(len(dataset)):
+            print(lis_n[i],'\n','+'*20)
+            Y_pred=cls.predict(dataset[i][0])
+            Y_t=dataset[i][1]
+            print('auc:\n',accuracy_score(Y_t,Y_pred))
+            print('roc:\n',recall_score(Y_t,Y_pred))
+            print('f1:\n',f1_score(Y_t,Y_pred))
 
 
 def main():
@@ -68,7 +89,7 @@ def main():
         break
     features,label= hr_preprocessing(dep=True)
     hr_modeling(features,label)
-    print(features,label)
+    #print(features,label)
     #print(df['salary'].value_counts())
 if __name__=='__main__':
     main()
