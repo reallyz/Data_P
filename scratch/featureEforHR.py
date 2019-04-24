@@ -5,6 +5,8 @@ from sklearn.preprocessing import Normalizer
 from sklearn.preprocessing import LabelEncoder,OneHotEncoder
 from sklearn.discriminant_analysis import  LinearDiscriminantAnalysis
 from sklearn.decomposition import PCA
+import pydotplus
+
 
 
 #不同标注的处理方式
@@ -64,15 +66,23 @@ def hr_modeling(features,label):
     from sklearn.metrics import accuracy_score, recall_score, f1_score
     from sklearn.neighbors import KNeighborsClassifier
     from sklearn.naive_bayes import GaussianNB,BernoulliNB
+    from sklearn.tree import DecisionTreeClassifier,export_graphviz
     models=[]
     models.append(('KNN',KNeighborsClassifier()))
     models.append(('GNB',GaussianNB()))
     models.append(('BNB',BernoulliNB()))
+    models.append(('DesT',DecisionTreeClassifier()))
     dataset=[(X_train,Y_train),(X_validation,Y_validation),(X_tt,Y_tt)]
     lis_n=['train','validation','test']
     for cls_name,cls in models:
         print(cls_name,'\n','-'*20)
         cls.fit(X_train,Y_train)
+        if cls_name=='DesT':
+            data_dot=export_graphviz(cls,out_file=None,feature_names=features.columns.values,
+                                     class_names=['NL','L'],filled=True,rounded=True,special_characters=True)
+            graph=pydotplus.graph_from_dot_data(data_dot)
+            graph.write_pdf('../output/decision_tree_noname.pdf')
+
         for i in range(len(dataset)):
             print(lis_n[i],'\n','+'*20)
             Y_pred=cls.predict(dataset[i][0])
@@ -80,6 +90,7 @@ def hr_modeling(features,label):
             print('auc:\n',accuracy_score(Y_t,Y_pred))
             print('roc:\n',recall_score(Y_t,Y_pred))
             print('f1:\n',f1_score(Y_t,Y_pred))
+
 
 
 def main():
