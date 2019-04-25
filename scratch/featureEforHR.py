@@ -102,7 +102,7 @@ def main():
     hr_modeling(features,label)
     #print(features,label)
     #print(df['salary'].value_counts())
-    test
+    print('now all is set')
 if __name__=='__main__':
     main()
 
