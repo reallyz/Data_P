@@ -67,11 +67,13 @@ def hr_modeling(features,label):
     from sklearn.neighbors import KNeighborsClassifier
     from sklearn.naive_bayes import GaussianNB,BernoulliNB
     from sklearn.tree import DecisionTreeClassifier,export_graphviz
+    from sklearn.svm import SVC
     models=[]
     models.append(('KNN',KNeighborsClassifier()))
     models.append(('GNB',GaussianNB()))
     models.append(('BNB',BernoulliNB()))
     models.append(('DesT',DecisionTreeClassifier()))
+    models.append(('SVMCls',SVC(C=1000)))
     dataset=[(X_train,Y_train),(X_validation,Y_validation),(X_tt,Y_tt)]
     lis_n=['train','validation','test']
     for cls_name,cls in models:
@@ -102,7 +104,7 @@ def main():
     hr_modeling(features,label)
     #print(features,label)
     #print(df['salary'].value_counts())
-    print('now all is set')
+
 if __name__=='__main__':
     main()
 
