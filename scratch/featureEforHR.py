@@ -8,7 +8,7 @@ from sklearn.decomposition import PCA
 import pydotplus
 
 
-
+#不同分类器的优缺点，保证每次训练结果不变的random_state
 #不同标注的处理方式
 #sl,le,npr,amh,tsc,wa,pl5:true-normalizescaler,fals-minmaxsacler
 #sla,dep:true-onehot,false-label
@@ -68,12 +68,16 @@ def hr_modeling(features,label):
     from sklearn.naive_bayes import GaussianNB,BernoulliNB
     from sklearn.tree import DecisionTreeClassifier,export_graphviz
     from sklearn.svm import SVC
+    from sklearn.ensemble import RandomForestClassifier
+    from sklearn.ensemble import  AdaBoostClassifier
     models=[]
     models.append(('KNN',KNeighborsClassifier()))
     models.append(('GNB',GaussianNB()))
     models.append(('BNB',BernoulliNB()))
     models.append(('DesT',DecisionTreeClassifier()))
     models.append(('SVMCls',SVC(C=1000)))
+    models.append(('RForest',RandomForestClassifier()))
+    models.append(('AdaBoost',AdaBoostClassifier()))
     dataset=[(X_train,Y_train),(X_validation,Y_validation),(X_tt,Y_tt)]
     lis_n=['train','validation','test']
     for cls_name,cls in models:
