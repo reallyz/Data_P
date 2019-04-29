@@ -69,7 +69,7 @@ def hr_modeling(features,label):
     from sklearn.tree import DecisionTreeClassifier,export_graphviz
     from sklearn.svm import SVC
     from sklearn.ensemble import RandomForestClassifier
-    from sklearn.ensemble import  AdaBoostClassifier
+    from sklearn.ensemble import  AdaBoostClassifier #指定算法有要求
     models=[]
     models.append(('KNN',KNeighborsClassifier()))
     models.append(('GNB',GaussianNB()))
@@ -97,6 +97,17 @@ def hr_modeling(features,label):
             print('roc:\n',recall_score(Y_t,Y_pred))
             print('f1:\n',f1_score(Y_t,Y_pred))
 
+def regress(features,label):
+    from sklearn.linear_model import LinearRegression
+    from sklearn.metrics import mean_squared_error
+    models=[]
+    models.append(('LR',LinearRegression()))
+    for clsn,clsf in models:
+        clsf.fit(features,label)
+        y_predic=clsf.predict(features)
+        print('classfier:',clsn)
+        print('Coff\n',clsf.coef_)
+        print('Error\n',mean_squared_error(label,y_predic))
 
 
 def main():
@@ -106,6 +117,12 @@ def main():
         break
     features,label= hr_preprocessing(dep=True)
     hr_modeling(features,label)
+    print('回归\n')
+    print('=====' * 10, '\n\n')
+    print('回归开始')
+    rfeature = features[['number_project', 'average_monthly_hours']]
+    rlabel = features['last_evaluation']
+    regress(rfeature,rlabel)
     #print(features,label)
     #print(df['salary'].value_counts())
 
