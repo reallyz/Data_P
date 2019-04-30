@@ -70,6 +70,33 @@ def hr_modeling(features,label):
     from sklearn.svm import SVC
     from sklearn.ensemble import RandomForestClassifier
     from sklearn.ensemble import  AdaBoostClassifier #指定算法有要求
+    from keras.models import Sequential
+    from keras.layers.core import Dense,Activation
+    from keras.optimizers import  SGD
+    sgd=SGD(lr=0.1)
+    mdl=Sequential()
+    mdl.add(Dense(50,input_dim=len(features.values[0])))
+    mdl.add(Activation('sigmoid'))
+    mdl.add(Dense(2,activation='softmax'))
+    #mdl.add(Activation('softmax')) 建模的几种写法
+    ''' x = Dense(64, activation='relu')(inputs)
+        x = Dense(64, activation='relu')(x)
+        predictions = Dense(10, activation='softmax')(x)
+    '''
+    #可调参，可更换优化函数 如 optimizer=Adam,这个优化器的特点是发现某个方向下降后，会加速下降(
+    #而不是像随机梯度一样，仍旧下降幅度一定
+    #和计算机性能有关
+    mdl.compile(optimizer=sgd,loss='mean_squared_error')
+    mdl.fit(X_train,np.array([[0,1] if i==1 else [1,0] for i in Y_train]),epochs=10000,batch_size =2000)
+    dataset = [(X_train, Y_train), (X_validation, Y_validation), (X_tt, Y_tt)]
+    for i in range(len(dataset)):
+        print('NN', '\n', '+' * 20)
+        Y_pred =mdl.predict_classes(dataset[i][0])
+        Y_t = dataset[i][1]
+        print('auc:\n', accuracy_score(Y_t, Y_pred))
+        print('roc:\n', recall_score(Y_t, Y_pred))
+        print('f1:\n', f1_score(Y_t, Y_pred))
+
     models=[]
     models.append(('KNN',KNeighborsClassifier()))
     models.append(('GNB',GaussianNB()))
