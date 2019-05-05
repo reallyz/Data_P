@@ -6,7 +6,8 @@ from sklearn.preprocessing import LabelEncoder,OneHotEncoder
 from sklearn.discriminant_analysis import  LinearDiscriminantAnalysis
 from sklearn.decomposition import PCA
 import pydotplus
-
+from sklearn.cluster import KMeans
+from sklearn.metrics import accuracy_score, recall_score, f1_score
 
 #不同分类器的优缺点，保证每次训练结果不变的random_state
 #不同标注的处理方式
@@ -152,6 +153,15 @@ def main():
     regress(rfeature,rlabel)
     #print(features,label)
     #print(df['salary'].value_counts())
+    '''
+    print('KMeans')
+    kk=KMeans(n_clusters=2)
+    kk.fit(features)
+    cls_re=kk.labels_
+    print('auc:\n', accuracy_score(label, cls_re))
+    print('roc:\n', recall_score(label, cls_re))
+    print('f1:\n', f1_score(label, cls_re))
+    '''
 
 if __name__=='__main__':
     main()
