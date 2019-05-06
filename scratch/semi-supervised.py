@@ -5,8 +5,10 @@ from sklearn.semi_supervised import LabelPropagation
 
 iris=datasets.load_iris()
 labels=iris.target
+print(labels)
+tep=np.array(iris.target)
 rup=np.random.rand(len(labels))
-rup=rup<0.7
+rup=rup<0.95
 Y=labels[rup]
 labels[rup]=-1
 print('unlabeled_points:',list(labels).count(-1))
@@ -18,6 +20,6 @@ print('ACC:',accuracy_score(Y,y_pt))
 print('ROC:',recall_score(Y,y_pt,average='micro'))
 print('F1:',f1_score(Y,y_pt,average='micro'))
 print('*8**'*20)
-print('ACC:',accuracy_score(iris.target,y_p))
-print('ROC:',recall_score(iris.target,y_p,average='micro'))
-print('F1:',f1_score(iris.target,y_p,average='micro'))
+print('ACC:',accuracy_score(tep,y_p))
+print('ROC:',recall_score(tep,y_p,average='micro'))
+print('F1:',f1_score(tep,y_p,average='micro'))
