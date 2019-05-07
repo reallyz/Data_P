@@ -88,16 +88,29 @@ def hr_modeling(features,label):
     #而不是像随机梯度一样，仍旧下降幅度一定
     #和计算机性能有关
     mdl.compile(optimizer=sgd,loss='mean_squared_error')
-    mdl.fit(X_train,np.array([[0,1] if i==1 else [1,0] for i in Y_train]),epochs=10000,batch_size =2000)
+    mdl.fit(X_train,np.array([[0,1] if i==1 else [1,0] for i in Y_train]),epochs=100,batch_size =2000)
     dataset = [(X_train, Y_train), (X_validation, Y_validation), (X_tt, Y_tt)]
+    import matplotlib.pyplot as plt
+    from sklearn.metrics  import roc_curve,auc,roc_auc_score
+    p=plt.figure()
     for i in range(len(dataset)):
         print('NN', '\n', '+' * 20)
-        Y_pred =mdl.predict_classes(dataset[i][0])
+        #Y_pred =mdl.predict_classes(dataset[i][0])
+        Y_pred = mdl.predict(dataset[i][0])#one-hot 形式：np.array([[0,1],[0.76,0.24])
+        Y_pred=np.array(Y_pred[:,1]).reshape((1,-1))[0]#取数时的维度的问题
+        p.add_subplot(1,3,i+1)
+        fpr,tpr,ths=roc_curve(dataset[i][1],Y_pred)#反过来计算fpr,tpr,ths,本来时由前推后
+        plt.plot(fpr,tpr)
+        plt.title(i+1)
+    plt.show()
+
+    '''
+        分类后的计算，没有概率的加入
         Y_t = dataset[i][1]
         print('auc:\n', accuracy_score(Y_t, Y_pred))
         print('roc:\n', recall_score(Y_t, Y_pred))
         print('f1:\n', f1_score(Y_t, Y_pred))
-
+    '''
     models=[]
     models.append(('KNN',KNeighborsClassifier()))
     models.append(('GNB',GaussianNB()))
