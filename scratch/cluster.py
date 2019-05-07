@@ -12,6 +12,7 @@ random_data=np.random.rand(n_s,2),None
 colors='bgrcmyk'
 data=[circles,moons,blobs,random_data]
 models=[('None',None),('Kmeans',KMeans(n_clusters=2)),('DBSCAN',DBSCAN(min_samples=3,eps=0.2)),('AGG',AgglomerativeClustering(n_clusters=3))]
+from sklearn.metrics import silhouette_score
 f=plt.figure()
 plt.rcParams['axes.unicode_minus']=False
 for index,clt in enumerate(models):
@@ -23,8 +24,11 @@ for index,clt in enumerate(models):
         else:
             clt_entity.fit(X)
             clt_res=clt_entity.labels_
-        plt.title(clt_name)
+        #plt.title(clt_name)
         f.add_subplot(len(models),len(data),index*len(data)+indexs+1)
-        plt.title(clt_name)
+        try:
+            print(clt_name,indexs,round(silhouette_score(X,clt_res),2))
+        except:
+            pass
         [plt.scatter(X[p,0],X[p,1],color=colors[clt_res[p]]) for p in range(len(X))]
 plt.show()
