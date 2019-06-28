@@ -4,7 +4,7 @@ import pandas as pd
 import numpy as np
 from sklearn.preprocessing import Imputer
 
-df=pd.read_csv('D:\\depy2016\\adult.csv')
+df=pd.read_csv(r'D:\depy2016\adult.csv')
 X=df.drop('income',axis=1)
 
 y=df.income
